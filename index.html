@@ -202,37 +202,28 @@
       </div>
 
       <!-- Main bar -->
-      <div class="px-4 sm:px-5 py-2.5 flex items-center gap-3">
+      <div class="px-4 sm:px-5 py-3 flex items-center gap-3">
 
         <!-- Back -->
         <button id="foot-back-btn" onclick="goBack()"
-          style="display:none;align-items:center;gap:6px;padding:9px 16px;border-radius:10px;border:2px solid rgba(255,255,255,.3);background:transparent;color:#fff;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;"
+          style="display:none;align-items:center;gap:6px;padding:9px 14px;border-radius:10px;border:2px solid rgba(255,255,255,.3);background:transparent;color:#fff;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;"
           onmouseover="this.style.background='rgba(255,255,255,.12)'" onmouseout="this.style.background='transparent'">← Back</button>
 
-        <!-- Centre: plan + guests -->
-        <div class="flex-1 flex flex-col items-center gap-0.5 min-w-0">
-          <div class="text-sm font-bold text-white leading-tight text-center truncate w-full" id="foot-plan"></div>
-          <div class="flex items-center gap-2" id="foot-stepper" style="display:none!important;">
-            <button onclick="footAdjGuests(-1)"
-              style="width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;border:none;font-size:16px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;"
-              onmouseover="this.style.background='rgba(255,255,255,.28)'" onmouseout="this.style.background='rgba(255,255,255,.15)'">−</button>
-            <span class="text-xs font-bold text-white" id="foot-guests"></span>
-            <button onclick="footAdjGuests(1)"
-              style="width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;border:none;font-size:16px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;"
-              onmouseover="this.style.background='rgba(255,255,255,.28)'" onmouseout="this.style.background='rgba(255,255,255,.15)'">+</button>
-          </div>
+        <!-- Centre: plan name -->
+        <div class="flex-1 min-w-0 text-center">
+          <div class="text-sm font-bold text-white leading-tight truncate" id="foot-plan"></div>
         </div>
 
-        <!-- Right: total + next -->
-        <div class="flex flex-col items-end gap-1 flex-shrink-0">
-          <div class="text-right">
-            <div class="text-[10px] font-bold tracking-widest leading-none mb-0.5" style="color:rgba(255,255,255,.45);">ESTIMATED TOTAL</div>
-            <div class="text-xl font-bold text-white leading-none" id="foot-total">$0.00</div>
-          </div>
-          <button id="foot-next-btn" onclick="goNext()"
-            style="display:flex;align-items:center;gap:6px;padding:9px 16px;border-radius:10px;border:none;background:#c8922a;color:#fff;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;box-shadow:0 2px 8px rgba(200,146,42,.4);"
-            onmouseover="this.style.background='#e5ae48'" onmouseout="this.style.background='#c8922a'">Next →</button>
+        <!-- Total -->
+        <div class="flex-shrink-0 text-right">
+          <div class="text-[10px] font-bold tracking-widest leading-none mb-0.5" style="color:rgba(255,255,255,.45);">TOTAL</div>
+          <div class="text-lg font-bold text-white leading-none" id="foot-total">$0.00</div>
         </div>
+
+        <!-- Next -->
+        <button id="foot-next-btn" onclick="goNext()"
+          style="display:flex;align-items:center;gap:6px;padding:9px 14px;border-radius:10px;border:none;background:#c8922a;color:#fff;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;box-shadow:0 2px 8px rgba(200,146,42,.4);flex-shrink:0;"
+          onmouseover="this.style.background='#e5ae48'" onmouseout="this.style.background='#c8922a'">Next →</button>
 
       </div>
     </div>
@@ -439,10 +430,7 @@ function updateUI() {
   const total = calcTotal();
   document.getElementById('foot-total').textContent = '$'+total.toFixed(2);
   const pl = PLANS.find(p=>p.id===S.plan);
-  document.getElementById('foot-plan').textContent   = pl ? pl.name : '';
-  document.getElementById('foot-guests').textContent = pl ? `${S.det.guests||0} guests` : '';
-  const stepper = document.getElementById('foot-stepper');
-  stepper.style.setProperty('display', pl ? 'flex' : 'none', 'important');
+  document.getElementById('foot-plan').textContent = pl ? pl.name : '';
 
   // Footer nav buttons
   const footBack = document.getElementById('foot-back-btn');
@@ -1353,12 +1341,6 @@ function adjGuests(d) {
   const el = document.getElementById('guests'); if (el) el.value = S.det.guests;
   updateUI();
 }
-function footAdjGuests(d) {
-  S.det.guests = Math.max(10,(parseInt(S.det.guests)||10)+d);
-  const el = document.getElementById('guests'); if (el) el.value = S.det.guests;
-  render();
-}
-
 // ─────────────────────────────────────────────────────────────────────────────
 // NAVIGATION
 // ─────────────────────────────────────────────────────────────────────────────
