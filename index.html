@@ -157,7 +157,6 @@
     .flatpickr-time .numInputWrapper span.arrowUp:after   { border-bottom-color: #1e4520 !important; }
     .flatpickr-time .numInputWrapper span.arrowDown:after { border-top-color: #1e4520 !important; }
     .flatpickr-input[readonly] { cursor: pointer !important; }
-    .flatpickr-input.flatpickr-alt-input { cursor: pointer !important; }
   </style>
 </head>
 <body class="bg-cream" style="padding-bottom:130px; min-height:100vh;">
@@ -519,36 +518,54 @@ function initPickers() {
   if (!window.flatpickr) return;
   const pl = PLANS.find(p => p.id === S.plan);
   if (!pl) return;
-  const minDate = bizDaysAhead(pl.lead);
+
+  // Center the calendar popup under its input (Flatpickr defaults to left-align)
+  function centerCal(fp) {
+    requestAnimationFrame(() => {
+      const cal = fp.calendarContainer;
+      const inp = fp._positionElement || fp.input;
+      if (!inp || !cal) return;
+      const ir  = inp.getBoundingClientRect();
+      const cw  = cal.offsetWidth;
+      const shift = Math.round((ir.width - cw) / 2);
+      if (shift > 0) cal.style.left = (parseFloat(cal.style.left || 0) + shift) + 'px';
+    });
+  }
 
   const dateEl = document.getElementById('date');
   if (dateEl) {
     flatpickr(dateEl, {
-      minDate,
+      minDate: bizDaysAhead(pl.lead),
       defaultDate: S.det.date || null,
-      dateFormat: 'Y-m-d',
-      altInput: true,
-      altFormat: 'F j, Y',
+      dateFormat: 'F j, Y',
       disableMobile: true,
-      onChange(_, dateStr) {
-        setDet('date', dateStr || '');
+      onOpen(_, __, fp) { centerCal(fp); },
+      onChange([date]) {
+        if (!date) { setDet('date', ''); return; }
+        const iso = `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+        setDet('date', iso);
         const disp = document.getElementById('date-display');
-        if (disp) disp.textContent = dateStr ? fmtDate(dateStr) : '';
+        if (disp) disp.textContent = fmtDate(iso);
       }
     });
   }
 
   const timeEl = document.getElementById('time');
   if (timeEl) {
+    let defDate = null;
+    if (S.det.time) {
+      const [h, m] = S.det.time.split(':');
+      defDate = new Date(); defDate.setHours(+h, +m, 0, 0);
+    }
     flatpickr(timeEl, {
-      enableTime: true,
-      noCalendar: true,
-      dateFormat: 'H:i',
-      time_24hr: false,
-      defaultDate: S.det.time ? `2000-01-01 ${S.det.time}` : null,
+      enableTime: true, noCalendar: true,
+      dateFormat: 'h:i K',
+      defaultDate: defDate,
       disableMobile: true,
-      onChange(_, timeStr) {
-        setDet('time', timeStr || '');
+      onOpen(_, __, fp) { centerCal(fp); },
+      onChange([date]) {
+        if (!date) { setDet('time', ''); return; }
+        setDet('time', `${String(date.getHours()).padStart(2,'0')}:${String(date.getMinutes()).padStart(2,'0')}`);
       }
     });
   }
