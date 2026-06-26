@@ -157,16 +157,29 @@
     .flatpickr-time .numInputWrapper span.arrowUp:after   { border-bottom-color: #1e4520 !important; }
     .flatpickr-time .numInputWrapper span.arrowDown:after { border-top-color: #1e4520 !important; }
     .flatpickr-input[readonly] { cursor: pointer !important; }
-
-    /* ── Time slot chips ── */
-    .time-chip {
-      padding: 9px 4px; border-radius: 10px; font-size: 12px; font-weight: 600;
-      border: 2px solid #e5e7eb; background: #fff; color: #6b7280;
-      cursor: pointer; transition: border-color .12s, background .12s, color .12s;
-      text-align: center; width: 100%;
+    /* Standalone time picker popup */
+    .flatpickr-calendar.hasTime.noCalendar {
+      min-width: 288px !important; border-radius: 18px !important;
+      overflow: hidden; padding: 0 !important;
+      box-shadow: 0 16px 48px rgba(0,0,0,.18) !important;
     }
-    .time-chip:hover { border-color: #1e4520; color: #1e4520; }
-    .time-chip.selected { background: #1e4520; border-color: #1e4520; color: #fff; }
+    .flatpickr-calendar.hasTime.noCalendar .flatpickr-time {
+      border-top: none !important; height: auto !important; padding: 20px 20px 26px !important;
+    }
+    .flatpickr-calendar.hasTime.noCalendar .flatpickr-time input.flatpickr-hour,
+    .flatpickr-calendar.hasTime.noCalendar .flatpickr-time input.flatpickr-minute {
+      font-size: 46px !important; height: 80px !important; line-height: 80px !important;
+    }
+    .flatpickr-calendar.hasTime.noCalendar .flatpickr-time .flatpickr-time-separator {
+      font-size: 40px !important; font-weight: 700 !important; color: #1e4520 !important; line-height: 80px !important;
+    }
+    .flatpickr-calendar.hasTime.noCalendar .flatpickr-time .flatpickr-am-pm {
+      font-size: 20px !important; height: 80px !important; line-height: 80px !important; font-weight: 700 !important;
+    }
+    .flatpickr-calendar.hasTime.noCalendar .numInputWrapper span.arrowUp,
+    .flatpickr-calendar.hasTime.noCalendar .numInputWrapper span.arrowDown {
+      height: 50% !important; padding: 0 8px !important;
+    }
   </style>
 </head>
 <body class="bg-cream" style="padding-bottom:130px; min-height:100vh; overflow-x:hidden;">
@@ -375,11 +388,6 @@ const CLASSICS_MENU = [
   'Herb Roasted Turkey Breast Plate',
 ];
 
-const TIME_SLOTS = [
-  { label:'Morning',   emoji:'🌅', slots:['07:00','07:30','08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30'] },
-  { label:'Afternoon', emoji:'☀️',  slots:['12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30'] },
-  { label:'Evening',   emoji:'🌇', slots:['17:00','17:30','18:00','18:30','19:00','19:30','20:00'] },
-];
 
 const SALADS = [
   { name:'Classic Caesar Salad',   half:25, full:45 },
@@ -571,6 +579,34 @@ function initPickers() {
     });
   }
 
+  const timeEl = document.getElementById('time');
+  if (timeEl) {
+    flatpickr(timeEl, {
+      enableTime: true,
+      noCalendar: true,
+      dateFormat: 'h:i K',
+      time_24hr: false,
+      minuteIncrement: 15,
+      disableMobile: true,
+      defaultDate: S.det.time ? new Date(`1970-01-01T${S.det.time}:00`) : null,
+      onReady(_, __, fp) {
+        const hdr = document.createElement('div');
+        hdr.style.cssText = 'background:#1e4520;color:#fff;padding:14px 20px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;text-align:center;';
+        hdr.textContent = 'Select Delivery Time';
+        fp.calendarContainer.insertBefore(hdr, fp.calendarContainer.firstChild);
+        centerCal(fp);
+      },
+      onOpen(_, __, fp) { centerCal(fp); },
+      onChange([date]) {
+        if (!date) { S.det.time = ''; updateUI(); return; }
+        const h = date.getHours(), m = date.getMinutes();
+        S.det.time = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+        timeEl.style.color = '#1e4520';
+        updateUI();
+      }
+    });
+  }
+
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -663,20 +699,12 @@ function step2() {
 
         <!-- Delivery time -->
         <div>
-          <label class="block text-sm font-bold text-forest mb-4">Preferred Delivery Time</label>
-          <div class="space-y-5">
-            ${TIME_SLOTS.map(g=>`
-              <div>
-                <div class="flex items-center gap-1.5 mb-2">
-                  <span class="text-base">${g.emoji}</span>
-                  <span class="text-xs font-bold tracking-widest text-gray-400 uppercase">${g.label}</span>
-                </div>
-                <div class="grid grid-cols-4 sm:grid-cols-5 gap-2">
-                  ${g.slots.map(t=>`<button class="time-chip${S.det.time===t?' selected':''}" data-timeslot="${t}" onclick="selectTime('${t}')">${fmtTime12(t)}</button>`).join('')}
-                </div>
-              </div>`).join('')}
-          </div>
-          <p class="text-xs text-gray-400 mt-4 flex items-center gap-1.5">
+          <label class="block text-sm font-bold text-forest mb-2">Preferred Delivery Time</label>
+          <p class="text-xs text-gray-400 mb-3">Tap the field to choose your preferred window.</p>
+          <input type="text" id="time" readonly placeholder="Tap to choose a time"
+            class="w-full border-2 border-gray-200 rounded-2xl px-4 py-3.5 text-base font-semibold bg-white focus:outline-none focus:border-forest"
+            style="color:${S.det.time ? '#1e4520' : '#9ca3af'};">
+          <p class="text-xs text-gray-400 mt-3 flex items-center gap-1.5">
             <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/></svg>
             Delivery windows to be confirmed — our team will reach out.
           </p>
@@ -1446,13 +1474,6 @@ function dessertQty(i,d)    {
 }
 function setPlating(t)      { S.addOns.plating=t; render(); }
 
-function selectTime(t) {
-  S.det.time = t;
-  document.querySelectorAll('.time-chip').forEach(btn => {
-    btn.classList.toggle('selected', btn.dataset.timeslot === t);
-  });
-  updateUI();
-}
 function setDet(k,v) {
   if (k==='guests') { const n=Math.max(10,parseInt(v)||10); S.det.guests=n; }
   else S.det[k] = v;
