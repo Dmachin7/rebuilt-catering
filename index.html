@@ -186,12 +186,12 @@
 <!-- ═══════════════════════════════ STICKY FOOTER ═══════════════════════════════ -->
 <div class="fixed bottom-0 left-0 right-0 z-50" style="pointer-events:none;">
 
-  <!-- Cart pull-up panel (full width) -->
-  <div id="cart-panel" class="bg-forest" style="display:none;max-height:55vh;overflow-y:auto;border-top:1px solid rgba(255,255,255,.1);pointer-events:auto;"></div>
-
   <!-- Floating centered pill -->
   <div class="flex justify-center px-4 pb-3 pt-1.5" style="pointer-events:none;">
-    <div class="bg-forest rounded-2xl" style="width:100%;max-width:680px;box-shadow:0 8px 32px rgba(0,0,0,.3);pointer-events:auto;">
+    <div class="bg-forest rounded-2xl overflow-hidden" style="width:100%;max-width:680px;box-shadow:0 8px 32px rgba(0,0,0,.3);pointer-events:auto;">
+
+      <!-- Cart pull-up panel (inside pill, inherits width) -->
+      <div id="cart-panel" style="display:none;max-height:55vh;overflow-y:auto;border-bottom:1px solid rgba(255,255,255,.1);"></div>
 
       <!-- Cart toggle strip -->
       <div style="border-bottom:1px solid rgba(255,255,255,.08);">
