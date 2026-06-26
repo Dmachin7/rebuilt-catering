@@ -184,52 +184,58 @@
 </main>
 
 <!-- ═══════════════════════════════ STICKY FOOTER ═══════════════════════════════ -->
-<div class="fixed bottom-0 left-0 right-0 z-50 bg-forest" style="box-shadow:0 -4px 24px rgba(0,0,0,.2);">
+<div class="fixed bottom-0 left-0 right-0 z-50" style="pointer-events:none;">
 
-  <!-- Cart pull-up panel -->
-  <div id="cart-panel" style="display:none;max-height:55vh;overflow-y:auto;border-top:1px solid rgba(255,255,255,.1);"></div>
+  <!-- Cart pull-up panel (full width) -->
+  <div id="cart-panel" class="bg-forest" style="display:none;max-height:55vh;overflow-y:auto;border-top:1px solid rgba(255,255,255,.1);pointer-events:auto;"></div>
 
-  <!-- Cart toggle strip -->
-  <div style="border-top:1px solid rgba(255,255,255,.08);">
-    <button id="cart-toggle-btn" onclick="toggleCart()" class="w-full flex items-center justify-center gap-1.5 py-1.5 text-xs font-semibold" style="color:rgba(255,255,255,.5);background:none;border:none;cursor:pointer;">
-      <svg id="cart-chevron" class="w-3 h-3 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"/></svg>
-      View Order
-    </button>
-  </div>
+  <!-- Floating centered pill -->
+  <div class="flex justify-center px-4 pb-3 pt-1.5" style="pointer-events:none;">
+    <div class="bg-forest rounded-2xl" style="width:100%;max-width:680px;box-shadow:0 8px 32px rgba(0,0,0,.3);pointer-events:auto;">
 
-  <!-- Main bar -->
-  <div class="max-w-5xl mx-auto px-4 sm:px-6 py-2.5 flex items-center gap-3">
+      <!-- Cart toggle strip -->
+      <div style="border-bottom:1px solid rgba(255,255,255,.08);">
+        <button id="cart-toggle-btn" onclick="toggleCart()" class="w-full flex items-center justify-center gap-1.5 py-1.5 text-xs font-semibold" style="color:rgba(255,255,255,.5);background:none;border:none;cursor:pointer;">
+          <svg id="cart-chevron" class="w-3 h-3 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"/></svg>
+          View Order
+        </button>
+      </div>
 
-    <!-- Back -->
-    <button id="foot-back-btn" onclick="goBack()"
-      style="display:none;align-items:center;gap:6px;padding:9px 16px;border-radius:10px;border:2px solid rgba(255,255,255,.3);background:transparent;color:#fff;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;"
-      onmouseover="this.style.background='rgba(255,255,255,.12)'" onmouseout="this.style.background='transparent'">← Back</button>
+      <!-- Main bar -->
+      <div class="px-4 sm:px-5 py-2.5 flex items-center gap-3">
 
-    <!-- Centre: plan + guests -->
-    <div class="flex-1 flex flex-col items-center gap-0.5 min-w-0">
-      <div class="text-sm font-bold text-white leading-tight text-center truncate w-full" id="foot-plan"></div>
-      <div class="flex items-center gap-2" id="foot-stepper" style="display:none!important;">
-        <button onclick="footAdjGuests(-1)"
-          style="width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;border:none;font-size:16px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;"
-          onmouseover="this.style.background='rgba(255,255,255,.28)'" onmouseout="this.style.background='rgba(255,255,255,.15)'">−</button>
-        <span class="text-xs font-bold text-white" id="foot-guests"></span>
-        <button onclick="footAdjGuests(1)"
-          style="width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;border:none;font-size:16px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;"
-          onmouseover="this.style.background='rgba(255,255,255,.28)'" onmouseout="this.style.background='rgba(255,255,255,.15)'">+</button>
+        <!-- Back -->
+        <button id="foot-back-btn" onclick="goBack()"
+          style="display:none;align-items:center;gap:6px;padding:9px 16px;border-radius:10px;border:2px solid rgba(255,255,255,.3);background:transparent;color:#fff;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;"
+          onmouseover="this.style.background='rgba(255,255,255,.12)'" onmouseout="this.style.background='transparent'">← Back</button>
+
+        <!-- Centre: plan + guests -->
+        <div class="flex-1 flex flex-col items-center gap-0.5 min-w-0">
+          <div class="text-sm font-bold text-white leading-tight text-center truncate w-full" id="foot-plan"></div>
+          <div class="flex items-center gap-2" id="foot-stepper" style="display:none!important;">
+            <button onclick="footAdjGuests(-1)"
+              style="width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;border:none;font-size:16px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;"
+              onmouseover="this.style.background='rgba(255,255,255,.28)'" onmouseout="this.style.background='rgba(255,255,255,.15)'">−</button>
+            <span class="text-xs font-bold text-white" id="foot-guests"></span>
+            <button onclick="footAdjGuests(1)"
+              style="width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;border:none;font-size:16px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;"
+              onmouseover="this.style.background='rgba(255,255,255,.28)'" onmouseout="this.style.background='rgba(255,255,255,.15)'">+</button>
+          </div>
+        </div>
+
+        <!-- Right: total + next -->
+        <div class="flex flex-col items-end gap-1 flex-shrink-0">
+          <div class="text-right">
+            <div class="text-[10px] font-bold tracking-widest leading-none mb-0.5" style="color:rgba(255,255,255,.45);">ESTIMATED TOTAL</div>
+            <div class="text-xl font-bold text-white leading-none" id="foot-total">$0.00</div>
+          </div>
+          <button id="foot-next-btn" onclick="goNext()"
+            style="display:flex;align-items:center;gap:6px;padding:9px 16px;border-radius:10px;border:none;background:#c8922a;color:#fff;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;box-shadow:0 2px 8px rgba(200,146,42,.4);"
+            onmouseover="this.style.background='#e5ae48'" onmouseout="this.style.background='#c8922a'">Next →</button>
+        </div>
+
       </div>
     </div>
-
-    <!-- Right: total + next -->
-    <div class="flex flex-col items-end gap-1 flex-shrink-0">
-      <div class="text-right">
-        <div class="text-[10px] font-bold tracking-widest leading-none mb-0.5" style="color:rgba(255,255,255,.45);">ESTIMATED TOTAL</div>
-        <div class="text-xl font-bold text-white leading-none" id="foot-total">$0.00</div>
-      </div>
-      <button id="foot-next-btn" onclick="goNext()"
-        style="display:flex;align-items:center;gap:6px;padding:9px 16px;border-radius:10px;border:none;background:#c8922a;color:#fff;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;box-shadow:0 2px 8px rgba(200,146,42,.4);"
-        onmouseover="this.style.background='#e5ae48'" onmouseout="this.style.background='#c8922a'">Next →</button>
-    </div>
-
   </div>
 </div>
 
@@ -301,10 +307,11 @@ const GRABGO = [
 ];
 
 const BEV_DRINKS = [
-  { name:'Bottled Water',      up:0, auto:true  },
-  { name:'Sparkling Water',    up:0, auto:true  },
-  { name:'Electrolyte Drinks', up:1, auto:false },
-  { name:'Iced Tea',           up:1, auto:false },
+  { name:'Bottled Water',      up:0 },
+  { name:'Sparkling Water',    up:0 },
+  { name:'Iced Tea',           up:0 },
+  { name:'Soda',               up:0 },
+  { name:'Electrolyte Drinks', up:1 },
 ];
 
 const CLASSICS_MENU = [
@@ -361,7 +368,7 @@ function calcTotal() {
   if (S.plan === 'grabgo' && S.grabgo.includes('BLT or Club Sandwich')) t += g;
   const bevKeys = Object.keys(S.addOns.bevs);
   if (bevKeys.length) {
-    t += 4 * g;
+    t += 2.5 * g;
     BEV_DRINKS.filter(d=>d.up>0).forEach(d=>{ if (d.name in S.addOns.bevs) t += d.up*(S.addOns.bevs[d.name]||0); });
   }
   Object.entries(S.addOns.salads).forEach(([n,q]) => {
@@ -531,14 +538,14 @@ function step2() {
         <div>
           <label class="block text-sm font-bold text-forest mb-2">Number of Guests <span class="text-red-400">*</span></label>
           <div class="flex items-center gap-4">
-            <button class="qty-btn" style="width:44px;height:44px;font-size:24px;" onclick="adjGuests(-5)">−</button>
+            <button class="qty-btn" style="width:44px;height:44px;font-size:24px;" onclick="adjGuests(-1)">−</button>
             <input type="number" id="guests" value="${d.guests}" min="10"
               oninput="setDet('guests',this.value)"
               class="flex-1 border-2 border-gray-200 rounded-2xl px-4 py-3 text-center font-bold text-3xl bg-white"
               style="-moz-appearance:textfield;">
-            <button class="qty-btn" style="width:44px;height:44px;font-size:24px;" onclick="adjGuests(5)">+</button>
+            <button class="qty-btn" style="width:44px;height:44px;font-size:24px;" onclick="adjGuests(1)">+</button>
           </div>
-          <p class="text-xs text-gray-400 mt-2 text-center">Use the buttons to adjust in steps of 5, or type a number</p>
+          <p class="text-xs text-gray-400 mt-2 text-center">Minimum 10 guests</p>
         </div>
 
         <!-- Divider -->
@@ -809,7 +816,7 @@ function step4() {
               <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0 ${bundleOn?'bg-forest text-white':'bg-gray-100'}">🥤</div>
               <div class="flex-1 min-w-0">
                 <div class="font-bold text-forest">Beverage Bundle</div>
-                <div class="text-xs text-gray-500 mt-0.5">Water, sparkling, electrolyte & iced tea · $4/person base</div>
+                <div class="text-xs text-gray-500 mt-0.5">Bottled water, sparkling, iced tea & soda — $2.50/person · electrolyte +$1/drink</div>
               </div>
               <button onclick="bevBundleToggle()"
                 class="text-xs px-3 py-1.5 rounded-lg font-semibold flex-shrink-0 transition-all
@@ -819,32 +826,34 @@ function step4() {
             </div>
 
             ${bundleOn ? `<div class="px-4 pb-4 bg-green-50 border-t border-green-100">
-              <p class="text-xs font-semibold text-gray-500 mt-3 mb-2">Choose your drinks — quantities must sum to ${S.det.guests} guests</p>
+              <p class="text-xs font-semibold text-gray-500 mt-3 mb-2">Choose your drinks for ${S.det.guests} guests</p>
               <div class="space-y-2">
                 ${BEV_DRINKS.map(d => {
-                  const on = d.name in ao.bevs;
-                  const qty = on ? (ao.bevs[d.name]||0) : 0;
+                  const qty = ao.bevs[d.name] || 0;
+                  const on = qty > 0;
                   return `<div class="flex items-center gap-3 p-2.5 rounded-xl border ${on?'border-forest bg-white':'border-gray-200 bg-white/60'}">
                     <div class="flex-1 min-w-0">
                       <div class="text-sm font-semibold text-forest leading-none">${d.name}</div>
-                      <div class="text-xs text-gray-400 mt-0.5">${d.up?`+$${d.up}/person`:'Included in base'}</div>
+                      <div class="text-xs text-gray-400 mt-0.5">${d.up?'+$1 per drink':'Included'}</div>
                     </div>
                     <div class="flex items-center gap-2 flex-shrink-0">
                       <button class="qty-btn" style="width:26px;height:26px;font-size:16px;" onclick="bevAdjQty('${d.name}',-1)">−</button>
                       <span class="font-bold text-forest w-6 text-center text-sm">${qty}</span>
                       <button class="qty-btn" style="width:26px;height:26px;font-size:16px;" onclick="bevAdjQty('${d.name}',1)">+</button>
                     </div>
-                    ${d.up&&qty>0?`<span class="text-xs font-bold flex-shrink-0" style="color:#c8922a;min-width:28px;text-align:right;">+$${qty*d.up}</span>`:''}
+                    ${d.up ? (qty>0 ? `<span class="text-xs font-bold flex-shrink-0" style="color:#c8922a;min-width:36px;text-align:right;">+$${qty*d.up}</span>` : `<span class="text-xs font-semibold flex-shrink-0" style="color:#c8922a;min-width:36px;text-align:right;">+$1 ea</span>`) : `<span class="text-xs font-medium flex-shrink-0 text-gray-400" style="min-width:36px;text-align:right;">—</span>`}
                   </div>`;
                 }).join('')}
               </div>
               ${(()=>{
                 const tot = Object.values(ao.bevs).reduce((s,v)=>s+v,0);
                 const g = parseInt(S.det.guests)||10;
-                const ok = tot===g;
-                return `<div class="mt-2 p-2 rounded-lg text-xs font-medium flex items-center gap-1.5
-                  ${ok?'bg-green-100 text-green-800':'bg-amber-50 text-amber-700'}">
-                  ${ok?`✓ All ${g} guests accounted for`:`⚠️ Total is ${tot} — needs to equal ${g}`}
+                const ok = tot >= g;
+                return `<div class="mt-3 flex items-center gap-2.5">
+                  <div class="w-4 h-4 rounded border-2 flex-shrink-0 flex items-center justify-center transition-all ${ok?'bg-forest border-forest':'border-gray-300 bg-white'}">
+                    ${ok ? chk() : ''}
+                  </div>
+                  <span class="text-xs font-medium ${ok?'text-green-800':'text-gray-500'}">All ${g} guests are accounted for</span>
                 </div>`;
               })()}
             </div>` : ''}
@@ -898,7 +907,7 @@ function step4() {
 
       <!-- Desserts -->
       <section class="mb-8">
-        <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-1">Desserts</h2>
+        <h2 class="text-base font-bold text-forest mb-1">Desserts</h2>
         <p class="text-sm text-gray-400 mb-3">$14 per dozen</p>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
           ${DESSERTS.map((d,i) => {
@@ -910,20 +919,16 @@ function step4() {
                 <div class="flex items-center gap-2">
                   <button class="qty-btn" onclick="dessertQty(${i},-1)">−</button>
                   <span class="font-bold text-forest text-lg w-6 text-center">${qty}</span>
+                  <span class="text-xs text-gray-500 font-medium">doz.</span>
                   <button class="qty-btn" onclick="dessertQty(${i},1)">+</button>
                 </div>
                 <div class="font-bold" style="color:${qty>0?'#c8922a':'#d1d5db'};">${qty>0?'$'+(qty*14):'—'}</div>
               </div>
-              ${qty>0 ? `<div class="text-xs text-gray-400 mt-1">${qty} dozen${qty>1?'s':''}</div>` : ''}
             </div>`;
           }).join('')}
         </div>
       </section>
 
-<div class="p-4 rounded-xl border border-amber-200 bg-amber-50 text-sm text-amber-800 flex items-start gap-2">
-        <span class="flex-shrink-0 text-base">⚠️</span>
-        <span><strong>Allergen Options Available:</strong> Ask us about our allergen-friendly menu options when your order is confirmed.</span>
-      </div>
     </div>`;
 }
 
@@ -1017,7 +1022,7 @@ function step6() {
     lines.push({ label:`Avocado upcharge — BLT (${g} × $1)`, amt:g });
   const _bevKeys = Object.keys(S.addOns.bevs);
   if (_bevKeys.length) {
-    lines.push({ label:`Beverage Bundle (${g} × $4)`, amt:4*g });
+    lines.push({ label:`Beverage Bundle (${g} × $2.50)`, amt:2.5*g });
     BEV_DRINKS.filter(d=>d.up>0).forEach(d=>{
       const qty=S.addOns.bevs[d.name]||0;
       if (d.name in S.addOns.bevs && qty>0) lines.push({ label:`${d.name} upcharge (${qty} × $${d.up})`, amt:qty*d.up });
@@ -1248,8 +1253,7 @@ function bevBundleToggle() {
     S.addOns.bevs = {};
   } else {
     const g = parseInt(S.det.guests)||10;
-    const half = Math.ceil(g/2);
-    S.addOns.bevs = { 'Bottled Water': half, 'Sparkling Water': g-half };
+    S.addOns.bevs = { 'Bottled Water': g, 'Sparkling Water': 0, 'Iced Tea': 0, 'Soda': 0, 'Electrolyte Drinks': 0 };
   }
   render();
 }
@@ -1307,19 +1311,6 @@ function toggleCart() {
   }
 }
 
-function normalizeBevs() {
-  const g = parseInt(S.det.guests)||10;
-  const bevs = S.addOns.bevs;
-  const keys = Object.keys(bevs);
-  if (!keys.length) return;
-  const total = keys.reduce((s,k)=>s+(bevs[k]||0),0);
-  if (total===g) return;
-  let rem = g;
-  keys.forEach((k,i) => {
-    if (i===keys.length-1) { bevs[k]=Math.max(0,rem); }
-    else { const v=Math.round((bevs[k]||0)/Math.max(1,total)*g); bevs[k]=Math.max(0,v); rem-=bevs[k]; }
-  });
-}
 function bevToggle(name) {
   const bevs = S.addOns.bevs;
   if (name in bevs) {
@@ -1333,21 +1324,9 @@ function bevToggle(name) {
   render();
 }
 function bevAdjQty(name, delta) {
-  const g = parseInt(S.det.guests)||10;
   const bevs = S.addOns.bevs;
-  const others = Object.keys(bevs).filter(k=>k!==name);
-  const cur = bevs[name]||0;
-  const newQty = Math.max(0, Math.min(g, cur+delta));
-  const diff = newQty - cur;
-  if (!diff) return;
-  if (diff>0) {
-    let rem = diff;
-    for (const k of others) { const take=Math.min(rem,bevs[k]||0); bevs[k]=(bevs[k]||0)-take; rem-=take; if(!rem) break; }
-    bevs[name] = cur+(diff-rem);
-  } else {
-    bevs[name] = newQty;
-    if (others.length) bevs[others[0]] = (bevs[others[0]]||0)+Math.abs(diff);
-  }
+  const cur = bevs[name] || 0;
+  bevs[name] = Math.max(0, cur + delta);
   render();
 }
 function saladQty(i, sz, delta) {
@@ -1372,12 +1351,12 @@ function setDet(k,v) {
 function adjGuests(d) {
   S.det.guests = Math.max(10,(parseInt(S.det.guests)||10)+d);
   const el = document.getElementById('guests'); if (el) el.value = S.det.guests;
-  normalizeBevs(); updateUI();
+  updateUI();
 }
 function footAdjGuests(d) {
   S.det.guests = Math.max(10,(parseInt(S.det.guests)||10)+d);
   const el = document.getElementById('guests'); if (el) el.value = S.det.guests;
-  normalizeBevs(); render();
+  render();
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
